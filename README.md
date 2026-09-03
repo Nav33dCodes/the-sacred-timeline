@@ -92,6 +92,8 @@ I got a little obsessed. Sorry not sorry.
 🎬  YouTube embeds on the home page ......... 6
 📦  YouTube iframes actually loaded ......... 0
 💾  Player JavaScript deferred .............. ~6 MB
+🖼️  Source images ............................ 5.9 MB
+🪶  Images actually downloaded ............... 163 KB
 🚀  First-load JS (gzipped) ................. ~119 KB
 🎨  First-load CSS (gzipped) ................ ~7 KB
 🖥️  Console errors ........................... 0
@@ -107,7 +109,14 @@ I got a little obsessed. Sorry not sorry.
   never feel it.
 - **`prefers-reduced-motion` is respected everywhere.** Ask your OS for less motion and Lenis
   doesn't even boot up. No arguments, no "are you sure".
-- **Zero layout shift.** Aspect-ratio boxes, preloaded LCP image, preconnected fonts.
+- **Every image is responsive AVIF.** The hero wallpapers ship as 3840×2160 masters (1.2–2.2 MB
+  each). A build step slices them into AVIF/WebP/JPEG at six widths, so a phone pulls **8 KB**
+  instead of 1.25 MB for the same hero. Posters that render at 300px stopped downloading at 2560px.
+- **Zero layout shift.** Every image carries real width/height, aspect-ratio boxes everywhere,
+  responsive AVIF preload for the LCP element, preconnected fonts.
+- **Vercel headers that mean it.** Hashed bundles and generated images get
+  `immutable, max-age=31536000`; `index.html` gets `must-revalidate` so deploys land instantly.
+  Plus `nosniff`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy` and HSTS.
 
 <div align="center">
   <img src="https://img.shields.io/badge/60-FPS_OR_DEATH-E8191F?style=for-the-badge&labelColor=050507" alt="60fps" />
@@ -142,8 +151,13 @@ Other spells:
 ```bash
 npm run build                     # production build → dist/
 npm run preview                   # serve the built output (test THIS, not just dev)
+npm run images                    # force-rebuild every image derivative
 npm run build -- --mode analyze   # + dist/stats.html bundle treemap for the nerds
 ```
+
+> 🖼️ `dev` and `build` both auto-run the image pipeline first. Drop a new JPEG into
+> `public/assets/` and it gets sliced into AVIF/WebP/JPEG at six widths automatically —
+> no manual step, no committing 11 MB of derivatives.
 
 Requires **Node 18+**. If it doesn't work, it's Loki. It's always Loki.
 
@@ -152,6 +166,8 @@ Requires **Node 18+**. If it doesn't work, it's Loki. It's always Loki.
 ## 🗂️ Where everything lives
 
 ```
+scripts/
+  optimize-images.mjs     🖼️ Slices masters into responsive AVIF/WebP/JPEG
 src/
   App.jsx                 Router, providers, global ⌘K shortcut
   index.css               Reset, base styles, shared UI atoms
@@ -199,8 +215,12 @@ pick it up automatically. No registration, no barrel file, no ritual sacrifice.
 
 Push to GitHub → import into Vercel → framework preset **Vite** → Deploy. Done.
 
-`vercel.json` rewrites every path to `/index.html`, so hard-refreshing `/timeline` doesn't 404 like
-it's 2013.
+`vercel.json` does the rest: SPA rewrites so hard-refreshing `/timeline` doesn't 404 like it's 2013,
+year-long immutable caching on everything content-hashed, `must-revalidate` on `index.html`, and a
+set of security headers so the Lighthouse best-practices score stops nagging.
+
+The image pipeline runs on Vercel automatically via the `prebuild` hook, so derivatives never touch
+the repo.
 
 ---
 

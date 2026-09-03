@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#050507" />
-    <link rel="icon" type="image/png" href="/n.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <title>The Sacred Timeline — The MCU Archive</title>
     <meta
@@ -30,8 +31,17 @@
       rel="stylesheet"
     />
 
-    <!-- The LCP element is the first hero wallpaper; start it immediately. -->
-    <link rel="preload" as="image" href="/assets/avengersdoomsday_teaser-a.jpg" fetchpriority="high" />
+    <!-- The LCP element is the first hero wallpaper. Preload the responsive AVIF
+         set so the browser fetches only the width it actually needs (~8KB on a
+         phone) instead of the 1.25MB master. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      imagesrcset="/assets/derived/avengersdoomsday_teaser-a-480.avif 480w, /assets/derived/avengersdoomsday_teaser-a-768.avif 768w, /assets/derived/avengersdoomsday_teaser-a-1080.avif 1080w, /assets/derived/avengersdoomsday_teaser-a-1440.avif 1440w, /assets/derived/avengersdoomsday_teaser-a-1920.avif 1920w, /assets/derived/avengersdoomsday_teaser-a-2560.avif 2560w, /assets/derived/avengersdoomsday_teaser-a-3840.avif 3840w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
 
     <!-- YouTube thumbnails are requested as soon as the trailer sections mount. -->
     <link rel="dns-prefetch" href="https://i.ytimg.com" />

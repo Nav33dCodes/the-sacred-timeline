@@ -51,9 +51,10 @@ Do not ask permission to modernise. Do ask before deleting user-facing content o
 | Hosting | Vercel (static) |
 
 ```bash
-npm run dev                      # http://localhost:5173
-npm run build                    # dist/
+npm run dev                      # http://localhost:5173  (predev regenerates images)
+npm run build                    # dist/                  (prebuild regenerates images)
 npm run preview                  # serve the built output
+npm run images                   # force-rebuild every image derivative
 npm run build -- --mode analyze  # + dist/stats.html bundle treemap
 ```
 
@@ -65,10 +66,13 @@ working copy, so be careful with destructive edits.
 ## 4. Layout
 
 ```
-index.html              Meta + OG tags, font preconnect, LCP image preload, anti-FOUC background
-vite.config.js          React plugin, es2020 target, manualChunks (react/motion/search), analyze mode
-vercel.json             SPA rewrite: /(.*) -> /index.html
-public/assets/          7 Doomsday teaser JPGs
+index.html              Meta + OG tags, font preconnect, responsive AVIF LCP preload, anti-FOUC bg
+vite.config.js          React plugin, es2020, assetsDir 'build', manualChunks, analyze mode
+vercel.json             SPA rewrite + cache-control + security headers
+scripts/
+  optimize-images.mjs   Generates AVIF/WebP/JPEG derivatives + src/data/imageManifest.json
+public/assets/          7 Doomsday teaser JPGs (the masters — never edited by the script)
+public/assets/derived/  Generated derivatives (gitignored, rebuilt by pre-hooks)
 src/
   main.jsx              createRoot + StrictMode
   App.jsx               BrowserRouter > WatchProvider > SmoothScroll > Shell.
@@ -84,6 +88,7 @@ src/
                           search trigger, watch-percentage chip, mobile sheet
     CommandPalette.jsx/.css  Cmd+K fuzzy search over every entry, fully keyboard-driven
     LiteYouTube.jsx/.css     YouTube facade — thumbnail now, iframe only on click
+    Img.jsx                  Responsive <picture>: AVIF -> WebP -> JPEG, auto width/height
     EntryCard.jsx/.css       Archive grid card (memoised) + the `.entry-grid` class
     Reveal.jsx               <Reveal> / <RevealItem> scroll-reveal wrappers
     SmoothScroll.jsx         Lenis provider + useSmoothScroll() { lenis, lock, unlock, scrollTo }
@@ -149,8 +154,13 @@ These are load-bearing. The site was explicitly rebuilt around them — do not r
   Adding Framer `layout` to those items is the fastest way to drop frames here.
 - **Every animation needs a `prefers-reduced-motion` escape.** `index.css` has a global kill switch,
   and `SmoothScroll` does not start Lenis at all when reduced motion is requested.
-- **Images**: `loading="lazy"` + `decoding="async"` below the fold, and an `aspect-ratio` box so
-  nothing shifts. The first hero wallpaper is preloaded in `index.html` as the LCP element.
+- **Never reference a raw image directly.** Use `<Img>`, which resolves the manifest and emits an
+  AVIF/WebP/JPEG `<picture>` with a width ladder. A 4K master is 1.2-2.2MB; the same image through
+  the pipeline is ~8KB on a phone and ~44KB at 2560px. Drop new files in `public/assets/` and the
+  pre-hooks pick them up; `<Img>` falls back to a plain `<img>` if a file hasn't been processed.
+- **The first hero wallpaper must not fade in.** `AnimatePresence initial={false}` keeps it opaque
+  on mount — animating opacity from 0 would delay LCP by the length of the transition.
+- **`<Img priority>` for the LCP image only** (eager + `fetchpriority="high"`); everything else lazy.
 - **Scroll locking** goes through `useSmoothScroll().lock()/unlock()` (ref-counted), never
   `body { overflow: hidden }`.
 
@@ -190,7 +200,25 @@ derive from `entries` / `entryById` / `ARCHIVE_STATS`.
 
 ---
 
-## 9. Adding a library
+## 9. Vercel
+
+`vercel.json` is not just a rewrite any more — keep these in sync if paths change:
+
+- Hashed build output lives at **`/build/*`** (`assetsDir: 'build'`), deliberately separate from
+  `/assets/*`, which Vite copies verbatim from `public/`. Mixing them would make it impossible to
+  serve hashed files as `immutable` without also freezing the un-hashed masters.
+- `/build/*` and `/assets/derived/*` → `max-age=31536000, immutable` (both are content-addressed).
+- `/assets/*` (the masters) → `max-age=86400, stale-while-revalidate=604800`.
+- `/index.html` → `must-revalidate`, so a deploy is picked up immediately.
+- Security headers: `nosniff`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`, HSTS.
+- The catch-all rewrite is last; Vercel serves real files before applying it.
+
+`sharp` is a devDependency and the `prebuild` hook runs on Vercel, so image derivatives are
+generated at deploy time and never committed.
+
+---
+
+## 10. Adding a library
 
 Encouraged, with two rules: it must earn its bundle cost, and it must land in `package.json` in the
 same change that imports it. Prefer small, tree-shakeable, actively maintained packages. Add heavy
@@ -199,7 +227,7 @@ anything non-trivial.
 
 ---
 
-## 10. Verifying a change
+## 11. Verifying a change
 
 There are no tests. The loop is:
 

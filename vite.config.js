@@ -13,6 +13,10 @@ export default defineConfig(({ mode }) => ({
 
   build: {
     target: 'es2020',
+    // Hashed build output goes to /build, NOT /assets. public/assets/ is copied
+    // to dist/assets/ verbatim, and mixing the two makes it impossible to serve
+    // hashed files as `immutable` without also freezing the un-hashed images.
+    assetsDir: 'build',
     cssCodeSplit: true,
     sourcemap: false,
     reportCompressedSize: false,

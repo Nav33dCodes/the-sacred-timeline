@@ -12,11 +12,13 @@ import {
 import { FaXmark, FaDownload, FaArrowRight, FaChevronDown } from 'react-icons/fa6';
 import PageTransition from '../components/PageTransition';
 import LiteYouTube from '../components/LiteYouTube';
+import Img from '../components/Img';
 import Reveal, { RevealItem } from '../components/Reveal';
 import { useSmoothScroll } from '../components/SmoothScroll';
 import { HOME_CONFIG, SOCIAL_LINKS } from '../config/siteConfig';
 import { ARCHIVE_STATS, PHASES, SAGAS, entries } from '../data/mcuData';
 import { stagger, charRise, EASE_OUT } from '../lib/motion';
+import { SIZES, preloadImage } from '../lib/images';
 import './Home.css';
 
 const RELEASE_DATE = new Date('2026-12-18T00:00:00');
@@ -117,11 +119,19 @@ const Hero = ({ onScrollToMedia }) => {
 
   const wallpapers = HOME_CONFIG.wallpapers;
 
+  // Depends on `index`, so the countdown restarts on manual dot clicks too —
+  // otherwise a click could be overridden by an already-running interval.
   useEffect(() => {
     if (wallpapers.length <= 1) return undefined;
-    const id = setInterval(() => setIndex((i) => (i + 1) % wallpapers.length), 8000);
-    return () => clearInterval(id);
-  }, [wallpapers.length]);
+    const id = setTimeout(() => setIndex((i) => (i + 1) % wallpapers.length), 8000);
+    return () => clearTimeout(id);
+  }, [index, wallpapers.length]);
+
+  // Warm the next wallpaper so the crossfade never reveals an unloaded image.
+  useEffect(() => {
+    if (wallpapers.length <= 1) return;
+    preloadImage(wallpapers[(index + 1) % wallpapers.length], SIZES.full);
+  }, [index, wallpapers]);
 
   const lines = [HOME_CONFIG.heroTitleLine1, HOME_CONFIG.heroTitleLine2];
 
@@ -132,16 +142,20 @@ const Hero = ({ onScrollToMedia }) => {
           <motion.div
             key={index}
             className="hero__layer"
-            style={{
-              backgroundImage: `url(${wallpapers[index]})`,
-              y: reduced ? 0 : bgY,
-              scale: reduced ? 1 : bgScale,
-            }}
+            style={{ y: reduced ? 0 : bgY, scale: reduced ? 1 : bgScale }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.6, ease: 'easeInOut' }}
-          />
+          >
+            <Img
+              src={wallpapers[index]}
+              alt=""
+              sizes={SIZES.full}
+              priority={index === 0}
+              className="hero__img"
+            />
+          </motion.div>
         </AnimatePresence>
         <div className="hero__grain" />
         <div className="hero__scrim" />
@@ -296,7 +310,12 @@ const TiltPoster = ({ poster, onOpen }) => {
       transition={{ type: 'spring', stiffness: 320, damping: 26 }}
       aria-label={`View ${poster.title}`}
     >
-      <img className="poster__img" src={poster.url} alt={poster.title} loading="lazy" decoding="async" />
+      <Img
+        src={poster.url}
+        alt={poster.title}
+        sizes={SIZES.poster}
+        className="poster__img"
+      />
       <span className="poster__sheen" aria-hidden="true" />
       <span className="poster__cta">View full poster</span>
     </motion.button>
@@ -441,12 +460,11 @@ const Home = () => {
           </Reveal>
 
           <Reveal className="overview__art" delay={0.1}>
-            <img
+            <Img
               src={HOME_CONFIG.posters[0]?.url}
               alt="Avengers: Doomsday teaser poster"
+              sizes={SIZES.overview}
               className="overview__poster"
-              loading="lazy"
-              decoding="async"
             />
           </Reveal>
         </div>
@@ -617,7 +635,13 @@ const Home = () => {
               >
                 <FaXmark />
               </button>
-              <img src={activePoster.url} alt={activePoster.title} className="lightbox__img" />
+              <Img
+                src={activePoster.url}
+                alt={activePoster.title}
+                sizes={SIZES.lightbox}
+                priority
+                className="lightbox__img"
+              />
               <a href={activePoster.url} download className="btn btn-primary btn-sheen lightbox__dl">
                 <FaDownload aria-hidden="true" />
                 Download

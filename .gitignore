@@ -34,6 +34,11 @@ out/
 stats.html
 dist/stats.html
 
+# Generated responsive images. Rebuilt automatically by the prebuild/predev
+# hooks, so there's no reason to carry ~11MB of derivatives in git.
+# NOTE: src/data/imageManifest.json IS committed — src/ imports it.
+public/assets/derived/
+
 # ---------- Caches ------------------------------------------------------------
 .vite/
 node_modules/.vite/

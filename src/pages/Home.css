@@ -34,11 +34,20 @@
 .hero__layer {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center 22%;
-  background-repeat: no-repeat;
   will-change: transform, opacity;
   transform-origin: center 30%;
+}
+
+/* The wallpaper is a real <img> (inside a <picture>) rather than a CSS
+   background, so the browser can pick a width from srcset and prioritise it
+   as the LCP element. */
+.hero__layer picture,
+.hero__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
 }
 
 /* Fine film grain — a single repeating gradient, no image request. */
@@ -388,8 +397,14 @@
   color: rgba(11, 11, 15, 0.7);
 }
 
+.overview__art picture {
+  display: block;
+}
+
 .overview__poster {
+  display: block;
   width: 100%;
+  height: auto;
   border-radius: var(--r-lg);
   box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.5);
 }
@@ -555,8 +570,14 @@
   will-change: transform;
 }
 
+.poster picture {
+  display: block;
+}
+
 .poster__img {
+  display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
 }
@@ -624,9 +645,15 @@
   max-width: min(92vw, 620px);
 }
 
+.lightbox__panel picture {
+  display: block;
+}
+
 .lightbox__img {
+  display: block;
   max-height: 76vh;
   width: auto;
+  height: auto;
   border-radius: var(--r-md);
   box-shadow: var(--shadow-xl);
 }
