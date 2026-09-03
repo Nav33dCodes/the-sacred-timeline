@@ -1,0 +1,157 @@
+/* ==========================================================================
+   DESIGN TOKENS — the single source of truth for the whole app.
+   Components reference the semantic aliases, never the raw values.
+   ========================================================================== */
+
+:root {
+  /* ---------- Raw palette ---------- */
+  --black: #000000;
+  --ink-900: #050507;
+  --ink-850: #08080b;
+  --ink-800: #0b0b0f;
+  --ink-700: #111116;
+  --ink-600: #16161d;
+  --ink-500: #1d1d26;
+  --ink-400: #262631;
+
+  --white: #ffffff;
+  --paper: #f5f5f2;
+  --paper-dim: #e6e6e0;
+
+  --red-600: #a30008;
+  --red-500: #cc0000;
+  --red-400: #e8191f;
+  --red-300: #ff3b3b;
+
+  --gold-400: #e0b062;
+
+  /* ---------- Semantic surfaces ---------- */
+  --bg-primary: var(--ink-900);
+  --bg-secondary: var(--ink-800);
+  --bg-elevated: var(--ink-700);
+  --bg-inset: var(--ink-850);
+  --bg-invert: var(--paper);
+
+  --surface-glass: rgba(12, 12, 16, 0.62);
+  --surface-glass-strong: rgba(6, 6, 9, 0.88);
+  --surface-hover: rgba(255, 255, 255, 0.05);
+  --surface-active: rgba(255, 255, 255, 0.09);
+
+  /* ---------- Text ---------- */
+  --text-main: #f4f4f6;
+  --text-muted: rgba(244, 244, 246, 0.62);
+  --text-dim: rgba(244, 244, 246, 0.38);
+  --text-faint: rgba(244, 244, 246, 0.2);
+  --text-invert: #0b0b0f;
+  --text-invert-muted: rgba(11, 11, 15, 0.6);
+
+  /* ---------- Accent ---------- */
+  --accent: var(--red-500);
+  --accent-bright: var(--red-400);
+  --accent-deep: var(--red-600);
+  --accent-soft: rgba(204, 0, 0, 0.14);
+  --accent-glow: rgba(232, 25, 31, 0.45);
+
+  /* ---------- Borders ---------- */
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-faint: rgba(255, 255, 255, 0.05);
+  --border-invert: rgba(11, 11, 15, 0.12);
+
+  /* ---------- Legacy aliases (kept so older markup keeps working) ---------- */
+  --accent-color: var(--accent);
+  --accent-hover: var(--accent-bright);
+  --border-color: var(--border);
+  --border-light: var(--border-faint);
+  --text-light: var(--text-dim);
+  --nav-bg: var(--surface-glass);
+
+  /* ---------- Typography ---------- */
+  --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+  --font-heading: var(--font-display);
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Fluid scale — min at 360px, max at 1440px */
+  --step--2: clamp(0.68rem, 0.66rem + 0.1vw, 0.74rem);
+  --step--1: clamp(0.79rem, 0.76rem + 0.15vw, 0.88rem);
+  --step-0: clamp(0.94rem, 0.9rem + 0.2vw, 1rem);
+  --step-1: clamp(1.13rem, 1.05rem + 0.35vw, 1.33rem);
+  --step-2: clamp(1.35rem, 1.22rem + 0.6vw, 1.78rem);
+  --step-3: clamp(1.62rem, 1.4rem + 1vw, 2.37rem);
+  --step-4: clamp(1.94rem, 1.6rem + 1.6vw, 3.16rem);
+  --step-5: clamp(2.33rem, 1.8rem + 2.4vw, 4.21rem);
+  --step-6: clamp(2.8rem, 1.95rem + 3.8vw, 5.61rem);
+  --step-7: clamp(3.36rem, 1.9rem + 6.5vw, 8rem);
+
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.18em;
+  --tracking-widest: 0.32em;
+
+  /* ---------- Space ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --section-y: clamp(3.5rem, 8vw, 8rem);
+  --gutter: clamp(1.15rem, 4vw, 3.5rem);
+
+  /* ---------- Radii ---------- */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+  --r-full: 999px;
+
+  /* ---------- Shadow / glow ---------- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 40px 100px -30px rgba(0, 0, 0, 0.9);
+  --glow-accent: 0 0 0 1px rgba(232, 25, 31, 0.35), 0 12px 40px -12px var(--accent-glow);
+
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur-base: 260ms;
+  --dur-slow: 520ms;
+  --dur-slower: 900ms;
+
+  /* ---------- Layout ---------- */
+  --max-w: 1280px;
+  --max-w-prose: 68ch;
+  --nav-h: 68px;
+
+  /* ---------- Z-index scale ---------- */
+  --z-base: 1;
+  --z-sticky: 50;
+  --z-nav: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  color-scheme: dark;
+}
+
+/* Light-on-white sections (Marvel.com register) opt in by class rather than
+   by media query — this site is deliberately dark-only. */
+.on-paper {
+  --bg-primary: var(--paper);
+  --bg-secondary: var(--white);
+  --text-main: var(--text-invert);
+  --text-muted: var(--text-invert-muted);
+  --text-dim: rgba(11, 11, 15, 0.42);
+  --border: var(--border-invert);
+  --border-faint: rgba(11, 11, 15, 0.07);
+  --surface-hover: rgba(11, 11, 15, 0.04);
+}

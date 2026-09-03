@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#050507" />
+    <link rel="icon" type="image/png" href="/n.png" />
+
+    <title>The Sacred Timeline — The MCU Archive</title>
+    <meta
+      name="description"
+      content="A reference-first archive for the Marvel Cinematic Universe. Browse every movie, series and special across six phases, five continuities, and track your watch order."
+    />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Sacred Timeline — The MCU Archive" />
+    <meta
+      property="og:description"
+      content="Every MCU movie, series and special across six phases and five continuities, with a watch-order tracker."
+    />
+    <meta property="og:image" content="/assets/avengersdoomsday_teaser-b.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fonts: preconnect first so the CSS request starts on an open connection -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- The LCP element is the first hero wallpaper; start it immediately. -->
+    <link rel="preload" as="image" href="/assets/avengersdoomsday_teaser-a.jpg" fetchpriority="high" />
+
+    <!-- YouTube thumbnails are requested as soon as the trailer sections mount. -->
+    <link rel="dns-prefetch" href="https://i.ytimg.com" />
+
+    <style>
+      /* Painted before the CSS bundle arrives so there is no white flash. */
+      html { background: #050507; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; color: #fff; font-family: system-ui, sans-serif">
+        The Sacred Timeline requires JavaScript to run.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

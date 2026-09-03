@@ -1,0 +1,147 @@
+.ecard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--ink-700), var(--ink-800));
+  transition: transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  contain: layout paint;
+}
+
+.ecard:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+.ecard.is-watched {
+  border-color: rgba(232, 25, 31, 0.28);
+}
+
+.ecard.is-watched::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent-bright), transparent);
+}
+
+/* Radial highlight that fades in on hover — opacity only. */
+.ecard__glow {
+  position: absolute;
+  inset: -40% 50% 40% -40%;
+  background: radial-gradient(circle at 30% 20%, rgba(232, 25, 31, 0.16), transparent 65%);
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+  pointer-events: none;
+}
+
+.ecard:hover .ecard__glow {
+  opacity: 1;
+}
+
+.ecard__link {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  padding-right: 3.4rem;
+}
+
+.ecard__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ecard__year {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.ecard__title {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 0.98;
+  text-transform: uppercase;
+  color: var(--text-main);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.ecard:hover .ecard__title {
+  color: var(--accent-bright);
+}
+
+.ecard__synopsis {
+  flex: 1;
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ecard__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-faint);
+}
+
+.ecard__meta {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ---------- Watch toggle ---------- */
+.ecard__toggle {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  transition: transform var(--dur-base) var(--ease-spring),
+    background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+.ecard__toggle:hover {
+  transform: scale(1.12);
+  border-color: var(--border-strong);
+  color: var(--text-main);
+}
+
+.ecard__toggle[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+}
+
+/* ---------- Grid ---------- */
+.entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-4);
+}
