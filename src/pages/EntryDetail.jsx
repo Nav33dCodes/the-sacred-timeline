@@ -50,8 +50,16 @@ const EntryDetail = () => {
   const saga = SAGAS[entry.saga];
   const phase = PHASES.find((p) => p.id === entry.phase);
 
+  const releaseDate = entry.date
+    ? new Date(`${entry.date}T00:00:00`).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : entry.year;
+
   const facts = [
-    { label: 'Release year', value: entry.year },
+    { label: 'Release date', value: releaseDate },
     { label: 'Format', value: entry.type },
     { label: 'Universe', value: saga.label },
     phase && { label: 'Phase', value: `${phase.label} · ${phase.years}` },

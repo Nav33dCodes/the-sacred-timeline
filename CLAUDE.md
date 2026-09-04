@@ -9,7 +9,7 @@ Guidance for Claude Code when working in this repository.
 **The Sacred Timeline** — a client-side React SPA that is two things at once:
 
 1. A **cinematic promo page** for *Avengers: Doomsday* (parallax hero, live countdown, trailers, key art).
-2. An **MCU reference archive** — 104 titles across five continuities, filterable, searchable, with a
+2. An **MCU reference archive** — 108 titles across five continuities, filterable, searchable, with a
    persistent watch-order tracker.
 
 No backend. No API. No auth. All data is static and bundled; all user state lives in `localStorage`.

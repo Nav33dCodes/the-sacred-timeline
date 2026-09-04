@@ -16,12 +16,20 @@ import Img from '../components/Img';
 import Reveal, { RevealItem } from '../components/Reveal';
 import { useSmoothScroll } from '../components/SmoothScroll';
 import { HOME_CONFIG, SOCIAL_LINKS } from '../config/siteConfig';
-import { ARCHIVE_STATS, PHASES, SAGAS, entries } from '../data/mcuData';
+import { ARCHIVE_STATS, PHASES, SAGAS, entries, getEntry } from '../data/mcuData';
 import { stagger, charRise, EASE_OUT } from '../lib/motion';
 import { SIZES, preloadImage } from '../lib/images';
 import './Home.css';
 
-const RELEASE_DATE = new Date('2026-12-18T00:00:00');
+// Sourced from the dataset, not hardcoded — Marvel has already moved this date
+// once, and the countdown, the hero caption and the archive must never disagree.
+const DOOMSDAY = getEntry('avengers-doomsday');
+const RELEASE_DATE = new Date(`${DOOMSDAY.date}T00:00:00`);
+const RELEASE_LABEL = RELEASE_DATE.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 
 /* ============================================================
    COUNTDOWN
@@ -211,7 +219,7 @@ const Hero = ({ onScrollToMedia }) => {
           >
             <p className="hero__aside-label">Arrives in theaters</p>
             <Countdown />
-            <p className="hero__aside-date">December 18, 2026</p>
+            <p className="hero__aside-date">{RELEASE_LABEL}</p>
           </motion.div>
         </div>
       </motion.div>
@@ -450,7 +458,7 @@ const Home = () => {
 
             <RevealItem>
               <div className="overview__formats">
-                {['December 18, 2026', 'IMAX', 'Dolby Vision', 'ScreenX', '4DX'].map((f) => (
+                {[RELEASE_LABEL, 'IMAX', 'Dolby Vision', 'ScreenX', '4DX'].map((f) => (
                   <span className="overview__format" key={f}>
                     {f}
                   </span>

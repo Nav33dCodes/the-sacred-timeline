@@ -1,13 +1,15 @@
 // ============================================================================
 // THE SACRED TIMELINE — CANONICAL DATASET
 // ----------------------------------------------------------------------------
-// Every entry carries: id, title, type, year, phase, saga, group, chrono, synopsis.
+// Every entry carries: id, title, type, year, date, phase, saga, group, chrono, synopsis.
 //
 //   type    'Movie' | 'Series' | 'Special' | 'Animated'
-//   phase   1-6 for the Main MCU, null elsewhere
+//   phase   1-6 for the Main MCU, null elsewhere. Also null for X-Men '97,
+//           which Marvel does not assign to a Phase.
 //   saga    key into SAGAS
+//   date    ISO release date. REQUIRED for the current year onwards, because
+//           `status` is DERIVED from it — never hand-maintained, never stale.
 //   chrono  in-universe viewing position within its group (1-based)
-//   status  'released' | 'upcoming'
 //
 // Adding an entry here automatically feeds the timeline, browse grids, filters,
 // search index and detail pages. Nothing else needs to change.
@@ -82,21 +84,25 @@ const mainMcu = [
   { id: 'secret-invasion', title: 'Secret Invasion', type: 'Series', year: 2023, phase: 5, chrono: 43, synopsis: 'Nick Fury returns to Earth to stop a Skrull faction hiding in plain sight.' },
   { id: 'loki-s2', title: 'Loki — Season 2', type: 'Series', year: 2023, phase: 5, chrono: 44, synopsis: 'The temporal loom is failing and Loki must choose a throne no one wants.' },
   { id: 'the-marvels', title: 'The Marvels', type: 'Movie', year: 2023, phase: 5, chrono: 45, synopsis: 'Carol, Monica and Kamala swap places every time they use their powers.' },
-  { id: 'echo', title: 'Echo', type: 'Series', year: 2024, phase: 5, chrono: 46, synopsis: 'Maya Lopez goes home to Oklahoma with Wilson Fisk close behind her.' },
-  { id: 'x-men-97-s1', title: "X-Men '97 — Season 1", type: 'Animated', year: 2024, phase: 5, chrono: 47, synopsis: 'The animated team returns to a world that still hates and fears them.' },
-  { id: 'deadpool-and-wolverine', title: 'Deadpool & Wolverine', type: 'Movie', year: 2024, phase: 5, chrono: 48, synopsis: 'The TVA drafts Wade Wilson, who drafts the worst Wolverine he can find.' },
-  { id: 'agatha-all-along', title: 'Agatha All Along', type: 'Series', year: 2024, phase: 5, chrono: 49, synopsis: 'Agatha Harkness walks the Witches’ Road to get her power back.' },
-  { id: 'daredevil-born-again-s1', title: 'Daredevil: Born Again — Season 1', type: 'Series', year: 2025, phase: 5, chrono: 50, synopsis: 'Matt Murdock hangs up the horns as Wilson Fisk runs for mayor of New York.' },
-  { id: 'captain-america-brave-new-world', title: 'Captain America: Brave New World', type: 'Movie', year: 2025, phase: 5, chrono: 51, synopsis: 'Sam Wilson’s first mission as Captain America runs into President Ross.' },
-  { id: 'thunderbolts', title: 'Thunderbolts*', type: 'Movie', year: 2025, phase: 5, chrono: 52, synopsis: 'A squad of expendable antiheroes is set up to be erased, and refuses.' },
-  { id: 'the-fantastic-four-first-steps', title: 'The Fantastic Four: First Steps', type: 'Movie', year: 2025, phase: 6, chrono: 53, synopsis: 'A retro-futurist first family faces Galactus and the herald who precedes him.' },
-  { id: 'ironheart', title: 'Ironheart', type: 'Series', year: 2025, phase: 6, chrono: 54, synopsis: 'Riri Williams builds the best suit since Stark and meets magic head on.' },
-  { id: 'eyes-of-wakanda', title: 'Eyes of Wakanda', type: 'Animated', year: 2025, phase: 6, chrono: 55, synopsis: 'Wakandan War Dogs recover stolen vibranium artifacts across history.' },
-  { id: 'x-men-97-s2', title: "X-Men '97 — Season 2", type: 'Animated', year: 2026, phase: 6, chrono: 56, status: 'upcoming', synopsis: 'The mutants continue after the timeline-shattering events of season one.' },
-  { id: 'daredevil-born-again-s2', title: 'Daredevil: Born Again — Season 2', type: 'Series', year: 2026, phase: 6, chrono: 57, status: 'upcoming', synopsis: 'Hell’s Kitchen escalates as the Devil and the Kingpin stop pretending.' },
-  { id: 'spider-man-brand-new-day', title: 'Spider-Man: Brand New Day', type: 'Movie', year: 2026, phase: 6, chrono: 58, status: 'upcoming', synopsis: 'A Peter Parker nobody remembers starts over from absolutely nothing.' },
-  { id: 'avengers-doomsday', title: 'Avengers: Doomsday', type: 'Movie', year: 2026, phase: 6, chrono: 59, status: 'upcoming', synopsis: 'Heroes from three universes are set on a collision course with Doctor Doom.' },
-  { id: 'avengers-secret-wars', title: 'Avengers: Secret Wars', type: 'Movie', year: 2027, phase: 6, chrono: 60, status: 'upcoming', synopsis: 'The end of the Multiverse Saga, and of the multiverse as it currently stands.' },
+  { id: 'echo', title: 'Echo', type: 'Series', year: 2024, date: '2024-01-09', phase: 5, chrono: 46, synopsis: 'Maya Lopez goes home to Oklahoma with Wilson Fisk close behind her.' },
+  { id: 'x-men-97-s1', title: "X-Men '97 — Season 1", type: 'Animated', year: 2024, date: '2024-03-20', phase: null, saga: 'mutant', chrono: 47, synopsis: 'The animated team returns to a world that still hates and fears them.' },
+  { id: 'deadpool-and-wolverine', title: 'Deadpool & Wolverine', type: 'Movie', year: 2024, date: '2024-07-26', phase: 5, chrono: 48, synopsis: 'The TVA drafts Wade Wilson, who drafts the worst Wolverine he can find.' },
+  { id: 'agatha-all-along', title: 'Agatha All Along', type: 'Series', year: 2024, date: '2024-09-18', phase: 5, chrono: 49, synopsis: 'Agatha Harkness walks the Witches’ Road to get her power back.' },
+  { id: 'your-friendly-neighborhood-spider-man', title: 'Your Friendly Neighborhood Spider-Man — Season 1', type: 'Animated', year: 2025, date: '2025-01-29', phase: 5, chrono: 50, synopsis: 'An alternate first year for Peter Parker, mentored by Norman Osborn.' },
+  { id: 'captain-america-brave-new-world', title: 'Captain America: Brave New World', type: 'Movie', year: 2025, date: '2025-02-14', phase: 5, chrono: 51, synopsis: 'Sam Wilson’s first mission as Captain America runs into President Ross.' },
+  { id: 'daredevil-born-again-s1', title: 'Daredevil: Born Again — Season 1', type: 'Series', year: 2025, date: '2025-03-04', phase: 5, chrono: 52, synopsis: 'Matt Murdock hangs up the horns as Wilson Fisk runs for mayor of New York.' },
+  { id: 'thunderbolts', title: 'Thunderbolts*', type: 'Movie', year: 2025, date: '2025-05-02', phase: 5, chrono: 53, synopsis: 'A squad of expendable antiheroes is set up to be erased, and refuses.' },
+  { id: 'ironheart', title: 'Ironheart', type: 'Series', year: 2025, date: '2025-06-24', phase: 5, chrono: 54, synopsis: 'Riri Williams builds the best suit since Stark and meets magic head on.' },
+  { id: 'the-fantastic-four-first-steps', title: 'The Fantastic Four: First Steps', type: 'Movie', year: 2025, date: '2025-07-25', phase: 6, chrono: 55, synopsis: 'A retro-futurist first family faces Galactus and the herald who precedes him.' },
+  { id: 'eyes-of-wakanda', title: 'Eyes of Wakanda', type: 'Animated', year: 2025, date: '2025-08-01', phase: 6, chrono: 56, synopsis: 'Wakandan War Dogs recover stolen vibranium artifacts across history.' },
+  { id: 'marvel-zombies', title: 'Marvel Zombies', type: 'Animated', year: 2025, date: '2025-09-24', phase: 6, chrono: 57, synopsis: 'A blood-soaked What If…? spin-off where the heroes lost to the horde.' },
+  { id: 'wonder-man', title: 'Wonder Man', type: 'Series', year: 2026, date: '2026-01-27', phase: 6, chrono: 58, synopsis: 'Simon Williams chases a Hollywood role while hiding what he can really do.' },
+  { id: 'daredevil-born-again-s2', title: 'Daredevil: Born Again — Season 2', type: 'Series', year: 2026, date: '2026-03-24', phase: 6, chrono: 59, synopsis: 'Hell’s Kitchen escalates as the Devil and the Kingpin stop pretending.' },
+  { id: 'x-men-97-s2', title: "X-Men '97 — Season 2", type: 'Animated', year: 2026, date: '2026-07-01', phase: null, saga: 'mutant', chrono: 60, synopsis: 'The team is scattered across time as Apocalypse rises in their absence.' },
+  { id: 'spider-man-brand-new-day', title: 'Spider-Man: Brand New Day', type: 'Movie', year: 2026, date: '2026-07-31', phase: 6, chrono: 61, synopsis: 'A Peter Parker nobody remembers starts over from absolutely nothing.' },
+  { id: 'visionquest', title: 'VisionQuest', type: 'Series', year: 2026, date: '2026-10-14', phase: 6, chrono: 62, synopsis: 'The White Vision searches for the memories and the life that were taken from him.' },
+  { id: 'avengers-doomsday', title: 'Avengers: Doomsday', type: 'Movie', year: 2026, date: '2026-12-18', phase: 6, chrono: 63, synopsis: 'Heroes from three universes are set on a collision course with Doctor Doom.' },
+  { id: 'avengers-secret-wars', title: 'Avengers: Secret Wars', type: 'Movie', year: 2027, date: '2027-12-17', phase: 6, chrono: 64, synopsis: 'The end of the Multiverse Saga, and of the multiverse as it currently stands.' },
 ];
 
 // ----------------------------------------------------------------------------
@@ -170,14 +176,35 @@ const legacy = [
 // ----------------------------------------------------------------------------
 // ASSEMBLY
 // ----------------------------------------------------------------------------
+/**
+ * `status` is DERIVED, never stored. Hardcoding 'upcoming' means the dataset
+ * silently goes stale the moment a film actually opens — so anything with a
+ * known release date reports itself correctly forever.
+ */
+const TODAY = new Date();
+
+const deriveStatus = (e) => {
+  if (e.date) return new Date(`${e.date}T00:00:00`) > TODAY ? 'upcoming' : 'released';
+  // No exact date: fall back to the year, which is only ambiguous for the
+  // current year — and every current/future entry carries a date.
+  return e.year > TODAY.getFullYear() ? 'upcoming' : 'released';
+};
+
+const PHASE_SAGA = new Map(PHASES.map((p) => [p.id, p.saga]));
+
 const decorate = (list, group, saga) =>
   list.map((e, i) => ({
-    status: 'released',
     phase: null,
+    date: null,
     ...e,
     group,
-    saga,
+    // Saga follows the Phase (1-3 Infinity, 4-6 Multiverse). Inheriting it from
+    // the group would tag all 60+ Main MCU titles "Infinity Saga" — including
+    // every Phase 4-6 entry — and leave the Multiverse filter empty.
+    // An entry can still override it explicitly (see X-Men '97).
+    saga: e.saga ?? PHASE_SAGA.get(e.phase) ?? saga,
     release: i + 1,
+    status: deriveStatus(e),
   }));
 
 export const watchOrderGroups = [

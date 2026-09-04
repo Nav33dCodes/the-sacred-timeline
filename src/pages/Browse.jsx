@@ -62,10 +62,14 @@ const Browse = () => {
       return true;
     });
 
+    // Sort on the exact date where we have one, falling back to the year, so
+    // two titles from the same year land in true release order.
+    const key = (e) => e.date ?? `${e.year}-00-00`;
+
     return filtered.sort((a, b) => {
       if (sort === 'title') return a.title.localeCompare(b.title);
-      if (sort === 'year-desc') return b.year - a.year || a.title.localeCompare(b.title);
-      return a.year - b.year || a.title.localeCompare(b.title);
+      const cmp = key(a).localeCompare(key(b));
+      return (sort === 'year-desc' ? -cmp : cmp) || a.title.localeCompare(b.title);
     });
   }, [query, saga, type, phase, status, sort, isWatched]);
 

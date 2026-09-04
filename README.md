@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:050507,50:CC0000,100:050507&height=220&section=header&text=The%20Sacred%20Timeline&fontSize=64&fontColor=ffffff&fontAlignY=34&desc=104%20titles.%20Five%20continuities.%20Zero%20chill.&descAlignY=56&descSize=18&animation=fadeIn" width="100%" alt="The Sacred Timeline" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:050507,50:CC0000,100:050507&height=220&section=header&text=The%20Sacred%20Timeline&fontSize=64&fontColor=ffffff&fontAlignY=34&desc=108%20titles.%20Five%20continuities.%20Zero%20chill.&descAlignY=56&descSize=18&animation=fadeIn" width="100%" alt="The Sacred Timeline" />
 
 <img src="https://readme-typing-svg.demolab.com?font=Bebas+Neue&size=34&duration=2600&pause=700&color=E8191F&center=true&vCenter=true&width=820&height=60&lines=Nobody+asked+for+this.;I+built+it+anyway.;It+scores+really+well+on+Lighthouse.;Marvel's+lawyers%2C+please+scroll+down." alt="Typing intro" />
 
@@ -58,7 +58,7 @@ Two websites wearing a trench coat:
 
 1. **A ridiculously over-produced landing page** for *Avengers: Doomsday* — parallax hero, live
    countdown, trailers, key art, the works.
-2. **An actual useful MCU archive** — 104 titles across five continuities, filterable six ways from
+2. **An actual useful MCU archive** — 108 titles across five continuities, filterable six ways from
    Sunday, with a watch tracker that remembers what you've seen.
 
 No backend. No API keys. No account. No cookie banner begging for your soul. Your watch progress
@@ -75,7 +75,7 @@ lives in `localStorage`, which means it's on your machine and I genuinely cannot
 
 | 💎 | Stone | What it actually does |
 | :-: | :-- | :-- |
-| 🟣 | **Power** | 104 entries with year, format, phase, saga, and both release *and* in-universe chronological positions. Yes, I ordered all of them. Yes, it took a while. |
+| 🟣 | **Power** | 108 entries with year, format, phase, saga, and both release *and* in-universe chronological positions. Yes, I ordered all of them. Yes, it took a while. |
 | 🔵 | **Space** | Filters are encoded in the URL. `?saga=mutant&status=unwatched` is a real link you can send to a friend to prove they haven't seen *Logan*. |
 | 🔴 | **Reality** | Toggle any group between **release order** and **chronological order**. Watch *The First Avenger* first like a functional adult. |
 | 🟠 | **Soul** | Watch tracker with per-group progress, mark-a-whole-group, reset, and cross-tab sync. It costs you no beloved family member. |
@@ -126,7 +126,7 @@ I got a little obsessed. Sorry not sorry.
 
 ## ♿ Accessibility (not optional, not a checkbox)
 
-Skip link. One `<h1>` per page. Real `<main>` landmark. All 104 watch toggles are genuine
+Skip link. One `<h1>` per page. Real `<main>` landmark. All 108 watch toggles are genuine
 `role="checkbox"` with `aria-checked` — not divs cosplaying as buttons. Filters use `aria-pressed`.
 Every icon-only button is labelled. Focus rings are visible and stay visible. The command palette
 runs entirely on arrows / enter / escape.
