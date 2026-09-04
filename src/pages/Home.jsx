@@ -458,7 +458,7 @@ const Home = () => {
 
             <RevealItem>
               <div className="overview__formats">
-                {[RELEASE_LABEL, 'IMAX', 'Dolby Vision', 'ScreenX', '4DX'].map((f) => (
+                {[RELEASE_LABEL, 'Dolby Atmos', 'Infinity Vision'].map((f) => (
                   <span className="overview__format" key={f}>
                     {f}
                   </span>
